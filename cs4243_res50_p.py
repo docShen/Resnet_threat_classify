@@ -168,7 +168,7 @@ class CS4243_dataset(Dataset):
         return len(self.img_index_list)
 
 my_lr= 1e-4
-batch_size = 32
+batch_size = 50
 epochs = 150
 
 train_dataset = CS4243_dataset(root_path,mode = 'train', transform = transformations)
@@ -203,6 +203,8 @@ def train(model, train_loader, optimizer, criterion):
         cur_acc = 0
         for c in range(6):
             cur_acc += (outputs[c].argmax(1) == y_train[:,c]).sum().item()
+            if (i + 1) % 10 == 0:
+                print('c : ',c ,'acc',cur_acc / (26 * batch_size))
         running_correct += cur_acc
         cur_loss.backward()
         optimizer.step()
